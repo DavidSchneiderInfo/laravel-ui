@@ -1,4 +1,13 @@
 {
     "name": "davidschneiderinfo/laravel-ui",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Schneider",
+            "email": "kontakt@davidschneider.info",
+            "homepage": "https://www.davidschneider.info",
+            "role": "Developer"
+        }
+    ],
     "require": {}
 }
