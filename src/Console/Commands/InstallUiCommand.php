@@ -5,7 +5,7 @@ namespace DavidSchneiderInfo\LaravelUi\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class InstallBlogPackage extends Command
+class InstallUICommand extends Command
 {
     protected $signature = 'ui:install';
 
