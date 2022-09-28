@@ -9,5 +9,17 @@
             "role": "Developer"
         }
     ],
-    "require": {}
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "DavidSchneiderInfo\\LaravelUi": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "DavidSchneiderInfo\\LaravelUi\\BlogPackageServiceProvider"
+            ]
+        }
+    }
 }
