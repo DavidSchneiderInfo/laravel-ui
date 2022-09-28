@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\File;
 
 class InstallBlogPackage extends Command
 {
-    protected $signature = 'blogpackage:install';
+    protected $signature = 'ui:install';
 
-    protected $description = 'Install the BlogPackage';
+    protected $description = 'Install the UI';
 
     public function handle()
     {
-        $this->info('Installing BlogPackage...');
+        $this->info('Installing package...');
 
         $this->info('Publishing configuration...');
 

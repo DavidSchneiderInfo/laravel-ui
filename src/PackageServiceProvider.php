@@ -3,6 +3,7 @@
 namespace DavidSchneiderInfo\LaravelUi;
 
 #use Illuminate\Support\Facades\Route;
+use DavidSchneiderInfo\LaravelUi\Console\Commands\InstallUiCommand;
 use Illuminate\Support\ServiceProvider;
 
 class PackageServiceProvider extends ServiceProvider
@@ -16,9 +17,7 @@ class PackageServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                AuthCommand::class,
-                ControllersCommand::class,
-                UiCommand::class,
+                InstallUiCommand::class,
             ]);
         }
     }
