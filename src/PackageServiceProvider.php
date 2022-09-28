@@ -8,6 +8,8 @@ use Illuminate\Support\ServiceProvider;
 
 class PackageServiceProvider extends ServiceProvider
 {
+    public const PACKAGE_PATH = __DIR__;
+    
     /**
      * Register the package services.
      *
@@ -16,6 +18,7 @@ class PackageServiceProvider extends ServiceProvider
     public function register()
     {
         if ($this->app->runningInConsole()) {
+
             $this->commands([
                 InstallUiCommand::class,
             ]);

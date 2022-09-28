@@ -4,58 +4,90 @@ namespace DavidSchneiderInfo\LaravelUi\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Laravel\Ui\Presets\Bootstrap;
+use Laravel\Ui\Presets\React;
+use Laravel\Ui\Presets\Vue;
 
 class InstallUICommand extends Command
 {
-    protected $signature = 'ui:install';
+    /**
+     * The console command signature.
+     *
+     * @var string
+     */
+    protected $signature = 'ui:install
+                    { type : The preset type (bootstrap, vue, react) }
+                    { --no-auth : Do not install authentication UI scaffolding }
+                    { --option=* : Pass an option to the preset command }';
 
-    protected $description = 'Install the UI';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Swap the front-end scaffolding for the application';
 
+    /**
+     * Execute the console command.
+     *
+     * @return void
+     *
+     * @throws \InvalidArgumentException
+     */
     public function handle()
     {
-        $this->info('Installing package...');
-
-        $this->info('Publishing configuration...');
-
-        if (! $this->configExists('blogpackage.php')) {
-            $this->publishConfiguration();
-            $this->info('Published configuration');
-        } else {
-            if ($this->shouldOverwriteConfig()) {
-                $this->info('Overwriting configuration file...');
-                $this->publishConfiguration($force = true);
-            } else {
-                $this->info('Existing configuration was not overwritten');
-            }
+        if (static::hasMacro($this->argument('type'))) {
+            return call_user_func(static::$macros[$this->argument('type')], $this);
         }
 
-        $this->info('Installed BlogPackage');
-    }
-
-    private function configExists($fileName)
-    {
-        return File::exists(config_path($fileName));
-    }
-
-    private function shouldOverwriteConfig()
-    {
-        return $this->confirm(
-            'Config file already exists. Do you want to overwrite it?',
-            false
-        );
-    }
-
-    private function publishConfiguration($forcePublish = false)
-    {
-        $params = [
-            '--provider' => "JohnDoe\BlogPackage\BlogPackageServiceProvider",
-            '--tag' => "config"
-        ];
-
-        if ($forcePublish === true) {
-            $params['--force'] = true;
+        if (! in_array($this->argument('type'), ['bootstrap', 'vue', 'react'])) {
+            throw new InvalidArgumentException('Invalid preset.');
         }
 
-       $this->call('vendor:publish', $params);
+        if ($this->option('no-auth')) {
+            $this->call('ui:install:auth');
+        }
+
+        $this->{$this->argument('type')}();
     }
-}
+
+    /**
+     * Install the "bootstrap" preset.
+     *
+     * @return void
+     */
+    protected function bootstrap()
+    {
+        Bootstrap::install();
+
+        $this->components->info('Bootstrap scaffolding installed successfully.');
+        $this->components->warn('Please run [npm install && npm run dev] to compile your fresh scaffolding.');
+    }
+
+    /**
+     * Install the "vue" preset.
+     *
+     * @return void
+     */
+    protected function vue()
+    {
+        Bootstrap::install();
+        Vue::install();
+
+        $this->components->info('Vue scaffolding installed successfully.');
+        $this->components->warn('Please run [npm install && npm run dev] to compile your fresh scaffolding.');
+    }
+
+    /**
+     * Install the "react" preset.
+     *
+     * @return void
+     */
+    protected function react()
+    {
+        Bootstrap::install();
+        React::install();
+
+        $this->components->info('React scaffolding installed successfully.');
+        $this->components->warn('Please run [npm install && npm run dev] to compile your fresh scaffolding.');
+    }}
